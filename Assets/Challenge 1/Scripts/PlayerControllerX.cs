@@ -6,10 +6,12 @@ public class PlayerControllerX : MonoBehaviour
     private float rotationSpeed = 100f;
     private float verticalInput;
 
+    private Vector3 startPosition;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        startPosition = transform.position;
     }
 
     // Update is called once per frame
@@ -23,5 +25,14 @@ public class PlayerControllerX : MonoBehaviour
 
         // tilt the plane up/down based on up/down arrow keys
         transform.Rotate(Vector3.left * rotationSpeed * Time.deltaTime * verticalInput);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            Debug.Log("Game Over, Man!");
+            transform.SetPositionAndRotation(startPosition, Quaternion.identity);
+        }
     }
 }
